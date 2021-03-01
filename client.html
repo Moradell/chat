@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="sidebar">
+        <div class="burger" id="burger">
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+        </div>
+        <ul class="users-list" id="userList">
+          <!-- <li class="users-list__item">
+            <div class="users-list__photo">
+              <img src="./img/ellipse.png" alt="photo">
+            </div>
+            <div class="users-list__content">
+              <div class="users-list__name">Алексей</div>
+              <div class="users-list__last-message">Какое-то последнее сообщение</div>
+            </div>
+          </li> -->
+        </ul>
+      </div>
+      <div class="chat">
+        <div class="chat__preview"></div>
+        <div class="chat__content">
+          <ul class="chat__message-list">
+
+          </ul>
+        </div>
+        <div class="chat__message">
+          <input placeholder="Введите сообщение..." type="text" class="chat__input" id="inputMessage">
+          <button type="submit" class="button" id="sendButton">Отправить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="login" id="login">
+    <div class="login__container">
+      <div class="login__content">
+        <div class="login__image">
+          <img src="./img/login.png" alt="######">
+        </div>
+        <div class="login__text">
+          <div class="login__title">
+            <h3>Авторизация</h3>
+          </div>
+          <div class="login__description">
+            <p>Введите пожалуйста свой ник для дальнейшей авторизации</p>
+          </div>
+        </div>
+        <form class="login__form" id="form">
+          <div class="login__input-container">
+            <input type="input" class="login__input" placeholder="Введите свой ник" name="name" id="name" required>
+            <label for="name" class="login__label">Введите свой ник</label>
+          </div>
+          <button type="submit" class="login__button" id="enterButton">войти</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="modal">
+    <div class="modal__body">
+      <div class="modal__content">
+        <button class="modal__close" id="closeModal">Х</button>
+        <div class="modal__title">Загрузка фото</div>
+        <div class="modal__preview">
+          <div class="modal__photo">
+            <img src="./img/avatar.png" alt="avatar">
+          </div>
+          <div class="modal__name">Aleksey</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="photo-review">
+    <div class="photo-review__body">
+      <div class="photo-review__content">
+        <div class="photo-review__image"></div>
+        <div class="photo-review__description">Область для профильной фотографии</div>
+        <div class="photo-review__buttons">
+          <button class="photo-review__button">отмена</button>
+          <button class="photo-review__button">сохранить</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <script src="./client.js"></script>
+</body>
+
+</html>
