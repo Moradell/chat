@@ -1,6 +1,13 @@
 const WebSocket = require('ws');
 const fs = require('fs');
 const uuidv1 = require('uuidv1');
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync')
+const adapter = new FileSync('db.json');
+const db = low(adapter);
+
+db.defaults({ posts: [] })
+  .write()
 
 const wss = new WebSocket.Server({
   port: 5501
@@ -29,6 +36,10 @@ wss.on('connection', function connection(ws) {
             name: request.payload.text
           }
         }
+
+        db.get('posts')
+          .push({ id: response.payload.id, name: response.payload.name })
+          .write()
 
         ws.send(JSON.stringify(response));
         break;
