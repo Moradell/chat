@@ -52,7 +52,8 @@ wss.on('connection', function connection(ws) {
             payload: user
           };
 
-          //ws.send(--------- о чем я ------------------)
+          // ws.send(--------- о чем я ------------------)
+          // ws.send(JSON.stringify(response));
 
 
           usersOnServer.forEach(user => clients[user].send(JSON.stringify(response)));
