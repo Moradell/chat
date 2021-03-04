@@ -33,4 +33,6 @@ h6 {
 ul {
   margin: 0;
   padding: 0;
+  color: white;
+  list-style-type: none;
 }

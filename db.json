@@ -1,0 +1,16 @@
+{
+  "posts": [],
+  "users": [
+    {
+      "id": "1642bab0-7d36-11eb-850a-f2ae36941e34",
+      "login": "1",
+      "status": "active"
+    },
+    {
+      "id": "1a3fd8f0-7d36-11eb-8ccf-2d669763746d",
+      "login": "2",
+      "status": "active"
+    }
+  ],
+  "avatar": []
+}

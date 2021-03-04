@@ -17,9 +17,9 @@ nameForm.addEventListener('submit', function (event) {
   burger.style.display = 'block';
 
   const request = {
-    type: 'name',
+    type: 'login',
     payload: {
-      text: inputName
+      login: inputName
     }
   }
 
@@ -73,9 +73,16 @@ ws.onopen = function () {
 ws.onmessage = function (message) {
   const response = JSON.parse(message.data);
 
+  const { payload } = response;
+
   switch (response.type) {
-    case 'name':
-      addUsers(response.payload.name);
+    case 'login':
+      addUsers(payload);
+      break;
+
+    case 'newLogin':
+      newUser(payload);
+      addUsers(payload);
       break;
 
     case 'message':
@@ -84,7 +91,11 @@ ws.onmessage = function (message) {
   }
 };
 
-function addUsers(name) {
+// window.addEventListener('beforeunload', function () {
+
+// });
+
+function addUsers({ login }) {
   const ul = document.getElementById('userList');
   const li = document.createElement('li');
   const photoBlock = document.createElement('div');
@@ -100,11 +111,18 @@ function addUsers(name) {
   userName.classList.add('users-list__name');
   userMessage.classList.add('users-list__last-message');
 
-  userName.innerText = name;
+  userName.innerText = login;
   userMessage.innerText = 'Какое-то последнее сообщение';
 
   photoBlock.append(photoImg);
   userContent.append(userName, userMessage);
   li.append(photoBlock, userContent);
   ul.append(li);
+}
+
+function newUser({ login }) {
+  const chat = document.getElementById('messageList');
+  const li = document.createElement('li');
+  li.innerText = `Пользователь ${login} вошел в чат`;
+  chat.appendChild(li);
 }
