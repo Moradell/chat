@@ -11,6 +11,7 @@ const photoPrev = document.getElementById('photoPrev');
 const modalPhotoPrev = document.getElementById('preview-modal');
 const canselButton = document.getElementById('canselButton');
 const saveButton = document.getElementById('saveButton');
+const zoneForDrop = document.getElementById('zoneForDrop');
 
 nameForm.addEventListener('submit', function (event) {
   event.preventDefault();
@@ -51,7 +52,7 @@ sendButton.addEventListener('click', function (event) {
 
 ws.onopen = function () {
   console.log('Hello');
-}
+};
 
 ws.onmessage = function (message) {
   const response = JSON.parse(message.data);
@@ -74,6 +75,10 @@ ws.onmessage = function (message) {
     case 'message':
       newMessage(payload.message);
       break;
+
+    case 'avatarReload':
+      reloadAvatars();
+      break;
   }
 };
 
@@ -89,6 +94,7 @@ function addUsers({ login }) {
   li.classList.add('users-list__item');
   photoBlock.classList.add('users-list__photo');
   photoImg.src = './img/ellipse.png';
+  photoImg.classList.add('user-photo');
   userContent.classList.add('users-list__content');
   userName.classList.add('users-list__name');
   userMessage.classList.add('users-list__last-message');
@@ -100,21 +106,27 @@ function addUsers({ login }) {
   userContent.append(userName, userMessage);
   li.append(photoBlock, userContent);
   ul.append(li);
-}
+};
 
 function newUser({ login }) {
   const chat = document.getElementById('messageList');
   const li = document.createElement('li');
   li.innerText = `Пользователь ${login} вошел в чат`;
   chat.appendChild(li);
-}
+};
 
 function newMessage(message) {
   const chat = document.getElementById('messageList');
   const li = document.createElement('li');
   li.innerText = message;
   chat.appendChild(li);
-}
+};
+
+function reloadAvatars() {
+  const reAvatar = document.getElementById('reAvatar').src;
+  const avatar = document.querySelector('.user-photo');
+  avatar.src = reAvatar;
+};
 
 burger.addEventListener('click', function () {
   burger.classList.toggle('burger--active');
@@ -142,6 +154,7 @@ closeModalButton.addEventListener('click', function (e) {
 photoPrev.addEventListener('click', function (event) {
   event.preventDefault();
 
+  document.getElementById('reAvatar').src = './img/no-photo.png';
   modal.classList.remove('open');
   burger.style.display = 'none';
   modalPhotoPrev.classList.add('openned');
@@ -157,8 +170,51 @@ canselButton.addEventListener('click', function (event) {
 
 saveButton.addEventListener('click', function (event) {
   event.preventDefault();
+  const avatarSource = document.getElementById('reAvatar').src;
+
+  const request = {
+    type: 'avatar',
+    payload: {
+      id: userPageId.innerText,
+      src: avatarSource
+    }
+  }
+  ws.send(JSON.stringify(request));
+
+  modalPhotoPrev.classList.remove('openned');
+  burger.style.display = 'block';
+  burger.classList.remove('burger--active');
+
 });
 
 // window.addEventListener('beforeunload', function () {
-
 // });
+
+zoneForDrop.addEventListener('dragover', function dragOverEvent(event) {
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'copy';
+});
+
+zoneForDrop.addEventListener('drop', function dropEvent(event) {
+  event.preventDefault();
+  const photos = event.dataTransfer.files;
+  reforgeInBase64(photos[0])
+    .then(
+      data => {
+        document.getElementById('reAvatar').src = data;
+      }
+    );
+});
+
+function reforgeInBase64(photo) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(photo);
+    reader.onload = function () {
+      resolve(reader.result);
+    };
+    reader.onerror = function (error) {
+      reject(error);
+    };
+  });
+};

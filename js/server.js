@@ -77,15 +77,18 @@ wss.on('connection', function connection(ws) {
         }
         break;
 
+      case 'avatar':
+        db.get('avatar').push({ id: payload.id, src: payload.src }).write();
+        for (const user in clients) {
+          clients[user].send(JSON.stringify({ type: 'avatarReload' }));
+        }
+        break;
+
       default: console.log('Что-то пошло не так');
         break;
     }
-  }
-
-  );
-}
-
-);
+  });
+});
 
 wss.on('close', function () { }
 

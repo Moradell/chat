@@ -28,10 +28,12 @@
 .photo-review__image {
   height: 310px;
   width: 285px;
-  background-image: url(./../img/nophoto.jpg);
-  background-size: cover;
-  background-position: center;
   margin-bottom: 15px;
+}
+
+.photo-preview {
+  height: 100%;
+  width: 100%;
 }
 
 .photo-review__description {

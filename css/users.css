@@ -29,3 +29,9 @@
   color: #7F91A4;
   font-weight: 300;
 }
+
+.user-photo {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
