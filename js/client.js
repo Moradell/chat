@@ -6,6 +6,11 @@ const nameForm = document.getElementById('form');
 const burger = document.getElementById('burger');
 const modal = document.getElementById('modal');
 const closeModalButton = document.getElementById('closeModal');
+const userPageId = document.getElementById('userId');
+const photoPrev = document.getElementById('photoPrev');
+const modalPhotoPrev = document.getElementById('preview-modal');
+const canselButton = document.getElementById('canselButton');
+const saveButton = document.getElementById('saveButton');
 
 nameForm.addEventListener('submit', function (event) {
   event.preventDefault();
@@ -35,35 +40,13 @@ sendButton.addEventListener('click', function (event) {
   const request = {
     type: 'message',
     payload: {
-      text: inputMessageValue
+      id: userPageId.innerText,
+      message: inputMessageValue
     }
   }
 
   ws.send(JSON.stringify(request));
   inputMessage.value = '';
-});
-
-burger.addEventListener('click', function () {
-  burger.classList.toggle('burger--active');
-
-  if (burger.classList.contains('burger--active')) {
-    modal.classList.add('open');
-  } else {
-    modal.classList.remove('open');
-  }
-});
-
-body.addEventListener('click', function (event) {
-  if (event.target.id == 'modal') {
-    modal.classList.remove('open');
-    burger.classList.remove('burger--active');
-  }
-});
-
-closeModalButton.addEventListener('click', function (e) {
-  e.preventDefault();
-  modal.classList.remove('open');
-  burger.classList.remove('burger--active');
 });
 
 ws.onopen = function () {
@@ -78,22 +61,21 @@ ws.onmessage = function (message) {
   switch (response.type) {
     case 'login':
       addUsers(payload);
+      userPageId.innerText = payload.id;
       break;
 
     case 'newLogin':
       newUser(payload);
-      addUsers(payload);
+      for (const user of payload) {
+        addUsers(user);
+      }
       break;
 
     case 'message':
-
+      newMessage(payload.message);
       break;
   }
 };
-
-// window.addEventListener('beforeunload', function () {
-
-// });
 
 function addUsers({ login }) {
   const ul = document.getElementById('userList');
@@ -126,3 +108,57 @@ function newUser({ login }) {
   li.innerText = `Пользователь ${login} вошел в чат`;
   chat.appendChild(li);
 }
+
+function newMessage(message) {
+  const chat = document.getElementById('messageList');
+  const li = document.createElement('li');
+  li.innerText = message;
+  chat.appendChild(li);
+}
+
+burger.addEventListener('click', function () {
+  burger.classList.toggle('burger--active');
+
+  if (burger.classList.contains('burger--active')) {
+    modal.classList.add('open');
+  } else {
+    modal.classList.remove('open');
+  }
+});
+
+body.addEventListener('click', function (event) {
+  if (event.target.id == 'modal') {
+    modal.classList.remove('open');
+    burger.classList.remove('burger--active');
+  }
+});
+
+closeModalButton.addEventListener('click', function (e) {
+  e.preventDefault();
+  modal.classList.remove('open');
+  burger.classList.remove('burger--active');
+});
+
+photoPrev.addEventListener('click', function (event) {
+  event.preventDefault();
+
+  modal.classList.remove('open');
+  burger.style.display = 'none';
+  modalPhotoPrev.classList.add('openned');
+});
+
+canselButton.addEventListener('click', function (event) {
+  event.preventDefault();
+
+  modalPhotoPrev.classList.remove('openned');
+  burger.style.display = 'block';
+  burger.classList.remove('burger--active');
+});
+
+saveButton.addEventListener('click', function (event) {
+  event.preventDefault();
+});
+
+// window.addEventListener('beforeunload', function () {
+
+// });

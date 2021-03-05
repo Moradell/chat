@@ -52,28 +52,29 @@ wss.on('connection', function connection(ws) {
             payload: user
           };
 
-          // ws.send(--------- о чем я ------------------)
-          // ws.send(JSON.stringify(response));
-
+          const activeUsers = db.get('users').find({ status: 'active' }).value();
+          response.payload = [activeUsers, user];
+          ws.send(JSON.stringify(response));
 
           usersOnServer.forEach(user => clients[user].send(JSON.stringify(response)));
         }
         break;
 
-      case 'name':
-        response = {
-          type: 'name',
+      case 'message':
+        let message = {
+          type: 'message',
           payload: {
-            id: uuidv1(),
-            name: request.payload.text
+            id: payload.id,
+            message: payload.message
           }
         }
 
-        db.get('posts')
-          .push({ id: response.payload.id, name: response.payload.name })
-          .write()
+        db.get('posts').push({ id: message.payload.id, message: message.payload.message }).write();
 
-        ws.send(JSON.stringify(response));
+        // usersOnServer.forEach(user => clients[user].send(JSON.stringify(response)));
+        for (const user in clients) {
+          clients[user].send(JSON.stringify(message))
+        }
         break;
 
       default: console.log('Что-то пошло не так');
