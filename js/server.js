@@ -56,7 +56,7 @@ wss.on('connection', function connection(ws) {
           response.payload = [activeUsers, user];
           ws.send(JSON.stringify(response));
 
-          usersOnServer.forEach(user => clients[user].send(JSON.stringify(response)));
+          usersOnServer.forEach((user) => clients[user].send(JSON.stringify(response)));
         }
         break;
 

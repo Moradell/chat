@@ -66,7 +66,9 @@ ws.onmessage = function (message) {
       break;
 
     case 'newLogin':
-      newUser(payload);
+      const lastUser = payload.length - 1;
+      newUser(payload[lastUser].login);
+      clearUsers();
       for (const user of payload) {
         addUsers(user);
       }
@@ -108,7 +110,7 @@ function addUsers({ login }) {
   ul.append(li);
 };
 
-function newUser({ login }) {
+function newUser(login) {
   const chat = document.getElementById('messageList');
   const li = document.createElement('li');
   li.innerText = `Пользователь ${login} вошел в чат`;
@@ -126,6 +128,13 @@ function reloadAvatars() {
   const reAvatar = document.getElementById('reAvatar').src;
   const avatar = document.querySelector('.user-photo');
   avatar.src = reAvatar;
+};
+
+function clearUsers() {
+  const userList = document.getElementById('userList');
+  while (userList.firstChild) {
+    userList.removeChild(userList.firstChild);
+  }
 };
 
 burger.addEventListener('click', function () {
@@ -187,9 +196,6 @@ saveButton.addEventListener('click', function (event) {
 
 });
 
-// window.addEventListener('beforeunload', function () {
-// });
-
 zoneForDrop.addEventListener('dragover', function dragOverEvent(event) {
   event.preventDefault();
   event.dataTransfer.dropEffect = 'copy';
@@ -218,3 +224,6 @@ function reforgeInBase64(photo) {
     };
   });
 };
+
+// window.addEventListener('beforeunload', function () {
+// });
