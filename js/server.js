@@ -65,7 +65,8 @@ wss.on('connection', function connection(ws) {
           type: 'message',
           payload: {
             id: payload.id,
-            message: payload.message
+            message: payload.message,
+            login: payload.login
           }
         }
 

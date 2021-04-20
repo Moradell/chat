@@ -75,7 +75,7 @@ ws.onmessage = function (message) {
       break;
 
     case 'message':
-      newMessage(payload.message);
+      newMessage(payload.message, payload.login);
       break;
 
     case 'avatarReload':
@@ -117,11 +117,26 @@ function newUser(login) {
   chat.appendChild(li);
 };
 
-function newMessage(message) {
+function newMessage(message, login) {
   const chat = document.getElementById('messageList');
   const li = document.createElement('li');
-  li.innerText = message;
-  chat.appendChild(li);
+  const user_name = document.createElement('div');
+  const container = document.createElement('div');
+  const photo = document.createElement('img');
+  const text = document.createElement('div');
+
+  li.classList.add('chat__message-item');
+  user_name.classList.add('chat__message-user');
+  container.classList.add('chat__message-content');
+  photo.classList.add('chat__message-user-img');
+  photo.src = './img/ellipse.png';
+  text.classList.add('chat__message-text')
+
+  user_name.innerText = login;
+  text.innerText = message;
+  container.append(photo, text);
+  li.append(user_name, container);
+  chat.append(li);
 };
 
 function reloadAvatars() {

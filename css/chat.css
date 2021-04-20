@@ -42,6 +42,37 @@
   background: #0E1621;
 }
 
+.chat__message-list {
+  margin-left: 9px;
+  margin-right: 20px;
+}
+
+.chat__message-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat__message-user {
+  margin: 0 0 6px 60px;
+  color: #5387C1;
+}
+
+.chat__message-content {
+  display: flex;
+  align-items: center;
+}
+
+.chat__message-user-img {
+  margin-right: 10px;
+
+}
+
+.chat__message-text {
+  background: #182633;
+  border-radius: 10px;
+  padding: 9px 50px 9px 20px;
+}
+
 .chat__message {
   height: 60px;
   display: flex;
